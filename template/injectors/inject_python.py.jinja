@@ -1,0 +1,67 @@
+# /// script
+# requires-python = ">=3.9"
+# dependencies = []
+# ///
+"""Module to update `pyproject.toml` with new entry points."""
+
+from pathlib import Path
+
+
+def main() -> None:
+    """Inject beartype and dotenv to toplelvel module."""
+    init_path = (
+        Path("src")
+        / "{% include pathjoin('includes', 'package_name.jinja') %}"
+        / "__init__.py"
+    )
+    init = init_path.read_text()
+    init = init.replace(
+        "from typing import Final\n",
+        (
+            "from typing import Final\n"
+            "\n"
+            "from {% include pathjoin('includes', 'package_name.jinja') %}.environment import ENVIRONMENT_FILE, load_dotenv"
+        )
+    )
+
+    init = init.replace(
+        "\"\"\"Public module attributes.\"\"\"\n",
+        (
+	          "\"\"\"Public module attributes.\"\"\""
+{%- if target_python_version[3:] | int > 11 %}
+"""
+
+
+if __debug__:
+    beartype = importlib.import_module("beartype")
+    beartype_claw = importlib.import_module("beartype.claw")
+    beartype_claw.beartype_this_package(
+        conf=beartype.BeartypeConf(is_color=False),
+    )
+
+load_dotenv(ENVIRONMENT_FILE)
+"""
+{%- else %}
+"""
+
+
+load_dotenv(ENVIRONMENT_FILE)
+"""
+{%- endif %}
+        ),
+    )
+
+{%- if target_python_version[3:] | int > 11 %}
+    init = init.replace(
+        "from typing import Final",
+        (
+            "import importlib\n"
+            "from typing import Final"
+        )
+    )
+{%- endif %}
+
+    init_path.write_text(init)
+
+if __name__ == "__main__":
+    main()

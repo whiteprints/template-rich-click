@@ -1,0 +1,52 @@
+_subdirectory: "template"
+_tasks:
+  - ["uv", "run", "injectors/inject_entrypoint.py"]
+  - ["uv", "run", "injectors/inject_usage_toctree.py"]
+  - ["uv", "run", "injectors/inject_python.py"]
+  - ["uv", "run", "injectors/inject_containerfile.py"]
+  - ["rm", "-r", "injectors"]
+  - command: [
+    "uvx", "--quiet", "--no-progress", "reuse", "annotate",
+    "--copyright", "{{ author }} <{{ author_email }}>",
+    "--license", "{{ code_license_id }}",
+    "--copyright-prefix", "spdx-symbol",
+    "--recursive", "--style", "python",
+    "src/", "tests", "pyproject.toml",
+  ]
+    when: "{{ code_license_id != '' }}"
+  - command: [
+    "uvx", "--quiet", "--no-progress", "reuse", "annotate",
+    "--copyright", "SPDX-FileCopyrightText: {{ header }}",
+    "--license", "LicenseRef-PROPRIETARY",
+    "--recursive", "--style", "python",
+    "src/", "tests", "pyproject.toml",
+  ]
+    when: "{{ code_license_id == '' }}"
+  - command: [
+    "uvx", "--quiet", "--no-progress", "reuse", "annotate",
+    "--copyright", "{{ author }} <{{ author_email }}>",
+    "--license", "{{ code_license_id }}",
+    "--copyright-prefix", "spdx-symbol",
+    "--style", "html",
+    "docs/usage.md",
+  ]
+    when: "{{ resources_license_id != '' }}"
+  - command: [
+    "uvx", "--quiet", "--no-progress", "reuse", "annotate",
+    "--copyright", "SPDX-FileCopyrightText: {{ header }}",
+    "--license", "LicenseRef-PROPRIETARY",
+    "--style", "html",
+    "docs/usage.md",
+  ]
+    when: "{{ resources_license_id == '' }}"
+  - ["uv", "--quiet", "add", "--no-sync", "rich_click", "python-dotenv"]
+  - command: ["uv", "--quiet", "remove", "--no-sync", "--dev", "beartype"]
+    when: "{{ target_python_version[3:] | int > 11 }}"
+  - command: ["uv", "--quiet", "add", "--no-sync", "beartype"]
+    when: "{{ target_python_version[3:] | int > 11 }}"
+  - command: ["uv", "--quiet", "add", "--no-sync", "typing_extensions; python_version<'3.12'"]
+    when: "{{ target_python_version[3:] | int < 12 }}"
+  - ["git", "add", "src/*.py", "tests/*.py", "pyproject.toml"]
+  - ["uvx", "--with", "tox-uv", "tox", "run", "-e", "autofix", "--"]
+  - ["git", "add", "--update"]
+  - ["git", "commit", "--message", "feat: ✨ add command line interface"]

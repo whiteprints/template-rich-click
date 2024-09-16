@@ -1,0 +1,22 @@
+# /// script
+# requires-python = ">=3.9"
+# dependencies = []
+# ///
+"""Module to update `pyproject.toml` with new entry points."""
+
+from pathlib import Path
+
+
+def main() -> None:
+    """Edit containerfile entrypoint."""
+    containerfile_root = Path("container")
+    for containerfile_path in containerfile_root.glob("**/Containerfile.*"):
+        containerfile = containerfile_path.read_text()
+        containerfile = containerfile.replace(
+            "ENTRYPOINT [\"python\"]",
+            "ENTRYPOINT [\"{% include pathjoin('includes', 'project_slug.jinja') %}\"]"
+        )
+        containerfile_path.write_text(containerfile)
+
+if __name__ == "__main__":
+    main()

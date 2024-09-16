@@ -1,0 +1,50 @@
+# /// script
+# requires-python = ">=3.9"
+# dependencies = []
+# ///
+"""Module to update `pyproject.toml` with new entry points."""
+
+from pathlib import Path
+
+
+def main() -> None:
+    """In docs/ add usage.md to the toctree of index.md."""
+    index_path = Path("docs") / "index.md"
+    index = index_path.read_text()
+    index = index.replace(
+        "Reference <autoapi/index>",
+        (
+          "Command Line Interface <usage>\n"
+          "Reference <autoapi/index>"
+        ),
+    )
+    index_path.write_text(index)
+
+    conf_path = Path("docs") / "conf.py"
+    conf = conf_path.read_text()
+    conf = conf.replace(
+        "    \"myst_parser\",\n",
+        (
+            "    \"myst_parser\",\n"
+            "    \"sphinx_click\",\n"
+        ),
+    )
+    conf_path.write_text(conf)
+
+    tox_path = Path("tox.ini")
+    tox = tox_path.read_text()
+    tox = tox.replace(
+        (
+            "    sphinx\n"
+            "    sphinx-autoapi\n"
+        ),
+        (
+            "    sphinx\n"
+            "    sphinx-click\n"
+            "    sphinx-autoapi\n"
+        ),
+    )
+    tox_path.write_text(tox)
+
+if __name__ == "__main__":
+    main()
