@@ -1,0 +1,29 @@
+# /// script
+# requires-python = ">=3.9"
+# dependencies = []
+# ///
+"""Module to update Containers with new entry points."""
+
+from pathlib import Path
+
+
+def main() -> None:
+    """Edit containerfile entrypoint."""
+    containerfile_root = Path("container")
+    for containerfile_path in containerfile_root.glob("**/Containerfile.*"):
+        if "containerignore" in containerfile_path.suffix:
+            continue
+
+        containerfile = containerfile_path.read_text()
+        source = "ENTRYPOINT [\"python\"]"
+        if source not in containerfile:
+            raise ValueError("Replacement failed")
+
+        containerfile = containerfile.replace(
+            source,
+            "ENTRYPOINT [\"{% include pathjoin('includes', 'project_slug.jinja') %}\"]"
+        )
+        containerfile_path.write_text(containerfile)
+
+if __name__ == "__main__":
+    main()
