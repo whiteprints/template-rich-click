@@ -1,4 +1,6 @@
 _subdirectory: "template"
+_jinja_extensions:
+  - jinja2_time.TimeExtension
 _tasks:
   - ["uv", "run", "injectors/inject_entrypoint.py"]
   - ["uv", "run", "injectors/inject_usage_toctree.py"]
