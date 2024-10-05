@@ -26,7 +26,7 @@ _tasks:
   - command: [
     "uvx", "--quiet", "--no-progress", "reuse", "annotate",
     "--copyright", "{{ author }} <{{ author_email }}>",
-    "--license", "{{ code_license_id }}",
+    "--license", "{{ resources_license_id }}",
     "--copyright-prefix", "spdx-symbol",
     "--style", "html",
     "docs/usage.md",
