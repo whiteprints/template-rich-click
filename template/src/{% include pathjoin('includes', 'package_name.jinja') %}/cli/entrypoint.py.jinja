@@ -165,7 +165,8 @@ def print_license(ctx: Context, _param: Option, value: bool) -> None:
 {%- else %}
     console.STDOUT.print(
         _(
-            "Copyright © {% now 'utc', '%Y' %} {{ copyright_holder }}"
+            "Copyright © {% now 'utc', '%Y' %}"
+            " {{ copyright_holder }}"
             " <{{ copyright_holder_email }}>.\n"
         )
     )
