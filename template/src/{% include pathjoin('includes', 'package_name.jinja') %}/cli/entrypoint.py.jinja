@@ -156,6 +156,20 @@ def print_license(ctx: Context, _param: Option, value: bool) -> None:
     package_metadata = importlib.import_module(
         "{% include pathjoin('includes', 'package_name.jinja') %}.package_metadata"
     )
+{%- if rcode_license_id == "" %}
+    console.STDOUT.print(
+        _(
+            "Copyright © {% now 'utc', '%Y' %} {{ copyright_holder }}"
+            " <{{ copyright_holder_email }}>.\n"
+        )
+    )
+{%- else %}
+    console.STDOUT.print(
+        _(
+            "{{ header }}"
+        )
+    )
+{%- endif %}
     console.STDOUT.print(
         _("Code released under license '{}'.").format(
             package_metadata.__license__
