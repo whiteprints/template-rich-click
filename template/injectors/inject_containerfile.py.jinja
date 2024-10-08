@@ -21,7 +21,7 @@ def main() -> None:
 
         containerfile = containerfile.replace(
             source,
-            "ENTRYPOINT [\"{% include pathjoin('includes', 'project_slug.jinja') %}\"]"
+            "ENTRYPOINT [\"{{ project_slug }}\"]"
         )
         containerfile_path.write_text(containerfile)
 

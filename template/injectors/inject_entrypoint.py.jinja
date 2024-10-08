@@ -59,9 +59,9 @@ def update_pyproject_toml(
 def main() -> None:
     """Update the pyproject.toml entrypoint."""
     update_pyproject_toml(
-        entry_point_name="{% include pathjoin('includes', 'project_slug.jinja') %}",
-        module_name="{% include pathjoin('includes', 'package_name.jinja') %}.cli.entrypoint",
-        function_name="{% include pathjoin('includes', 'package_name.jinja') %}",
+        entry_point_name="{{ project_slug }}",
+        module_name="{{ package_name }}.cli.entrypoint",
+        function_name="{{ package_name }}",
     )
 
 
