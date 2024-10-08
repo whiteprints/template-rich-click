@@ -2,7 +2,7 @@
 
 from rich import console as rich_console
 
-from {% include pathjoin('includes', 'package_name.jinja') %} import console as whiteprint_console
+from {{ package_name }} import console as whiteprint_console
 
 
 def test_default_stdout_console() -> None:

@@ -5,7 +5,7 @@ from typing import Final
 
 from click import testing
 
-from {% include pathjoin('includes', 'package_name.jinja') %}.cli import entrypoint
+from {{ package_name }}.cli import entrypoint
 
 
 MISSING_COMMAND_EXIT_CODE: Final = 2
@@ -23,7 +23,7 @@ class TestCLI:
                 fixture.
         """
         result = cli_runner.invoke(
-            entrypoint.{% include pathjoin('includes', 'package_name.jinja') %},
+            entrypoint.{{ package_name }},
             ["hello-world"],
         )
         assert result.exit_code == 0, "The CLI did not exit properly."
@@ -37,7 +37,7 @@ class TestCLI:
                 fixture.
         """
         result = cli_runner.invoke(
-            entrypoint.{% include pathjoin('includes', 'package_name.jinja') %},
+            entrypoint.{{ package_name }},
             ["30a212ea-815d-4659-bf8a-9cb467a11de1"],
         )
         assert result.exit_code == MISSING_COMMAND_EXIT_CODE, (

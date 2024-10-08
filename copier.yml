@@ -1,13 +1,15 @@
 _subdirectory: "template"
 _jinja_extensions:
   - jinja2_time.TimeExtension
+  - whiteprints_template_context.context.ContextUpdater
+  - whiteprints_template_context.filters.WhiteprintsFilters
 _tasks:
   - ["uv", "run", "injectors/inject_entrypoint.py"]
   - ["uv", "run", "injectors/inject_usage_toctree.py"]
   - ["uv", "run", "injectors/inject_python.py"]
   - ["uv", "run", "injectors/inject_containerfile.py"]
   - ["rm", "-r", "injectors"]
-  - ["chmod", "+x", "src/{% include pathjoin('includes', 'package_name.jinja') %}/cli/__main__.py"]
+  - ["chmod", "+x", "src/{{ package_name }}/cli/__main__.py"]
   - command: [
     "uvx", "--quiet", "--no-progress", "reuse", "annotate",
     "--copyright", "{{ copyright_holder }} <{{ copyright_holder_email }}>",

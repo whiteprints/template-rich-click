@@ -13,8 +13,8 @@ from typing import Final, Literal, TextIO, TypeAlias
 from typing import Final, Literal, TextIO
 {%- endif %}
 
-from {% include pathjoin('includes', 'package_name.jinja') %} import console
-from {% include pathjoin('includes', 'package_name.jinja') %}.loc import _
+from {{ package_name }} import console
+from {{ package_name }}.loc import _
 
 
 __all__: Final = ["LogLevel", "configure_logging"]

@@ -2,8 +2,8 @@
 
 from click import testing
 
-from {% include pathjoin('includes', 'package_name.jinja') %} import package_metadata
-from {% include pathjoin('includes', 'package_name.jinja') %}.cli import __app_name__, entrypoint
+from {{ package_name }} import package_metadata
+from {{ package_name }}.cli import __app_name__, entrypoint
 
 
 class TestCLI:
@@ -13,7 +13,7 @@ class TestCLI:
     def test_version(cli_runner: testing.CliRunner) -> None:
         """Check if the version printed by the CLI match the API one."""
         result = cli_runner.invoke(
-            entrypoint.{% include pathjoin('includes', 'package_name.jinja') %},
+            entrypoint.{{ package_name }},
             ["--version"],
         )
         assert result.exit_code == 0, "The CLI did not exit properly."
@@ -31,7 +31,7 @@ class TestCLI:
     def test_license(cli_runner: testing.CliRunner) -> None:
         """Check if the license flag exists."""
         result = cli_runner.invoke(
-            entrypoint.{% include pathjoin('includes', 'package_name.jinja') %},
+            entrypoint.{{ package_name }},
             ["--license"],
         )
         assert result.exit_code == 0, "The CLI did not exit properly."
@@ -40,7 +40,7 @@ class TestCLI:
     def test_help_flag_exists(cli_runner: testing.CliRunner) -> None:
         """Check if the version printed by the CLI match the API one."""
         result = cli_runner.invoke(
-            entrypoint.{% include pathjoin('includes', 'package_name.jinja') %},
+            entrypoint.{{ package_name }},
             ["--help"],
         )
         assert result.exit_code == 0, "The CLI did not exit properly."
@@ -53,5 +53,5 @@ class TestCLI:
             cli_runner: the CLI test runner provided by typer.testing or a
                 fixture.
         """
-        result = cli_runner.invoke(entrypoint.{% include pathjoin('includes', 'package_name.jinja') %})
+        result = cli_runner.invoke(entrypoint.{{ package_name }})
         assert result.exit_code == 0, "The CLI did not exit properly."

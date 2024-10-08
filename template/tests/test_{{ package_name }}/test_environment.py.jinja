@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-from {% include pathjoin('includes', 'package_name.jinja') %}.environment import load_dotenv
+from {{ package_name }}.environment import load_dotenv
 
 
 def test_load_dotenv(tmp_path: Path) -> None:

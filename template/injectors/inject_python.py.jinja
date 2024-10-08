@@ -11,7 +11,7 @@ def main() -> None:
     """Inject beartype and dotenv to toplelvel module."""
     init_path = (
         Path("src")
-        / "{% include pathjoin('includes', 'package_name.jinja') %}"
+        / "{{ package_name }}"
         / "__init__.py"
     )
     init = init_path.read_text()
@@ -24,7 +24,7 @@ def main() -> None:
         (
             "from typing import Final\n"
             "\n"
-            "from {% include pathjoin('includes', 'package_name.jinja') %}.environment import ENVIRONMENT_FILE, load_dotenv"
+            "from {{ package_name }}.environment import ENVIRONMENT_FILE, load_dotenv"
         )
     )
 

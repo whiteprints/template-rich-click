@@ -7,7 +7,7 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from {% include pathjoin('includes', 'package_name.jinja') %}.cli import exception
+from {{ package_name }}.cli import exception
 
 
 SLUG_REGEX: Final = r"^[a-z0-9]+(?:-[a-z0-9]+)*$"

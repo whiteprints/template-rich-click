@@ -22,10 +22,10 @@ from rich_click import Context, File, Option
 from rich_click.rich_command import RichCommand as Command
 from rich_click.rich_command import RichGroup as Group
 
-from {% include pathjoin('includes', 'package_name.jinja') %} import __version__
-from {% include pathjoin('includes', 'package_name.jinja') %}.cli import APP_NAME, __app_name__
-from {% include pathjoin('includes', 'package_name.jinja') %}.cli.logs import LogLevel, configure_logging
-from {% include pathjoin('includes', 'package_name.jinja') %}.loc import _
+from {{ package_name }} import __version__
+from {{ package_name }}.cli import APP_NAME, __app_name__
+from {{ package_name }}.cli.logs import LogLevel, configure_logging
+from {{ package_name }}.loc import _
 {%- if target_python_version[3:] | int < 11 %}
 
 
@@ -44,7 +44,7 @@ else:
 {%- endif %}
 
 
-__all__: Final = ["{% include pathjoin('includes', 'package_name.jinja') %}"]
+__all__: Final = ["{{ package_name }}"]
 """Public module attributes."""
 
 
@@ -152,9 +152,9 @@ def print_license(ctx: Context, _param: Option, value: bool) -> None:
     if not value:
         return
 
-    console = importlib.import_module("{% include pathjoin('includes', 'package_name.jinja') %}.console")
+    console = importlib.import_module("{{ package_name }}.console")
     package_metadata = importlib.import_module(
-        "{% include pathjoin('includes', 'package_name.jinja') %}.package_metadata"
+        "{{ package_name }}.package_metadata"
     )
 {%- if code_license_id == "" %}
     console.STDOUT.print(
@@ -165,9 +165,11 @@ def print_license(ctx: Context, _param: Option, value: bool) -> None:
 {%- else %}
     console.STDOUT.print(
         _(
-            "Copyright © {% now 'utc', '%Y' %}"
-            ' {{ copyright_holder }}'
-            " <{{ copyright_holder_email }}>.\n"
+            "Copyright © {} {} <{}>.\n"
+        ).format(
+            "{% now 'utc', '%Y' %}",
+            '"{{ copyright_holder }}"',
+            "<{{ copyright_holder_email }}>",
         )
     )
 {%- endif %}
@@ -247,7 +249,7 @@ class CLIArgsType(TypedDict):
     help=_("Print the license information."),
 )
 @click.version_option(version=__version__, prog_name=__app_name__)
-def {% include pathjoin('includes', 'package_name.jinja') %}(**kwargs: Unpack[CLIArgsType]) -> None:
+def {{ package_name }}(**kwargs: Unpack[CLIArgsType]) -> None:
     """The Whiteprint CLI."""
     configure_logging(
         level=kwargs["log_level"],

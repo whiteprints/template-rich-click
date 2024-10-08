@@ -30,7 +30,7 @@ def is_valid_slug(slug: str) -> bool:
             The slug candidate name.
 
     Example:
-        >>> is_valid_slug("{% include pathjoin('includes', 'project_slug.jinja') %}")
+        >>> is_valid_slug("{{ project_slug }}")
         True
         >>> is_valid_slug("-bad slug")
         False
