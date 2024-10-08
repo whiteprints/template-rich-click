@@ -54,6 +54,6 @@ _tasks:
   - ["git", "add", "src/*.py", "tests/*.py", "pyproject.toml"]
   - ["git", "add", "--update"]
   - ["git", "add", "docs/usage.md"]
-  - ["uvx", "--with", "tox-uv", "tox", "run", "-e", "autofix", "--"]
+  - ["uvx", "--quiet", "--with", "tox-uv", "tox", "run", "-e", "autofix", "--"]
   - ["git", "add", "--update"]
   - ["git", "commit", "--message", "feat: ✨ add command line interface"]
