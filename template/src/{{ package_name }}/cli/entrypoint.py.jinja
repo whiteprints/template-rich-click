@@ -158,19 +158,11 @@ def print_license(ctx: Context, _param: Option, value: bool) -> None:
     )
 {%- if code_license_id == "" %}
     console.STDOUT.print(
-        _(
-            '{{ header }}'
-        )
+        '{{ header }}'  # noqa: E501
     )
 {%- else %}
     console.STDOUT.print(
-        _(
-            "Copyright © {} {} <{}>.\n"
-        ).format(
-            "{% now 'utc', '%Y' %}",
-            '"{{ copyright_holder }}"',
-            "<{{ copyright_holder_email }}>",
-        )
+        "Copyright © {% now 'utc', '%Y' %} {{ copyright_holder }} <{{ copyright_holder_email }}>.\n"  # noqa: E501
     )
 {%- endif %}
     console.STDOUT.print(
