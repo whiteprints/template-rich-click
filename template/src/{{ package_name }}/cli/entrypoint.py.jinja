@@ -141,6 +141,31 @@ class LazyCommandLoader(Group):
 
 
 @override
+def print_copyright(ctx: Context, _param: Option, value: bool) -> None:
+    """Print the code copyright information.
+
+    Args:
+        ctx: the click Context.
+        _param: the click Option.
+        value: the value of the option.
+    """
+    if not value:
+        return
+
+    console = importlib.import_module("{{ package_name }}.console")
+{%- if code_license_id == "" %}
+    console.STDOUT.print(
+        '{{ header }}'  # noqa: E501
+    )
+{%- else %}
+    console.STDOUT.print(
+        'Copyright © {% now 'utc', '%Y' %} {{ copyright_holder }} <{{ copyright_holder_email }}>.'  # noqa: E501
+    )
+{%- endif %}
+    ctx.exit()
+
+
+@override
 def print_license(ctx: Context, _param: Option, value: bool) -> None:
     """Print the code licenses information.
 
@@ -156,15 +181,6 @@ def print_license(ctx: Context, _param: Option, value: bool) -> None:
     package_metadata = importlib.import_module(
         "{{ package_name }}.package_metadata"
     )
-{%- if code_license_id == "" %}
-    console.STDOUT.print(
-        '{{ header }}'  # noqa: E501
-    )
-{%- else %}
-    console.STDOUT.print(
-        'Copyright © {% now 'utc', '%Y' %} {{ copyright_holder }} <{{ copyright_holder_email }}>.\n'  # noqa: E501
-    )
-{%- endif %}
     console.STDOUT.print(
         _("Code released under license '{}'.").format(
             package_metadata.__license__
@@ -231,6 +247,14 @@ class CLIArgsType(TypedDict):
     help=_("A file in which to write the log."),
     default=os.environ.get(f"{APP_NAME}_LOG_FILE", "-"),
     show_default=True,
+)
+@click.option(
+    "--copyright",
+    is_flag=True,
+    callback=print_copyright,
+    expose_value=False,
+    is_eager=True,
+    help=_("Print the copyright information."),
 )
 @click.option(
     "--license",
