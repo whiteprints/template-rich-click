@@ -10,11 +10,11 @@ import sys
 from functools import cached_property
 from pathlib import Path
 {%- if target_python_version[3:] | int < 11 %}
-from typing import Final, TextIO, TypedDict, cast, get_args
+from typing import Final, TextIO, TypedDict, get_args
 {%- elif target_python_version[3:] | int < 12 %}
-from typing import Final, TextIO, TypedDict, Unpack, cast, get_args
+from typing import Final, TextIO, TypedDict, Unpack, get_args
 {%- else %}
-from typing import Final, TextIO, TypedDict, Unpack, cast, get_args, override
+from typing import Final, TextIO, TypedDict, Unpack, get_args, override
 {%- endif %}
 
 import rich_click as click
@@ -127,16 +127,13 @@ class LazyCommandLoader(Group):
         if (command := self.command_lookup.get(cmd_name)) is None:
             return None
 
-        return cast(
-            Command,
-            getattr(
-                importlib.import_module(
-                    command["module"],
-                    __package__,
-                ),
-                command["function_name"],
-                cmd_name,
+        return getattr(
+            importlib.import_module(
+                command["module"],
+                __package__,
             ),
+            command["function_name"],
+            None,
         )
 
 
