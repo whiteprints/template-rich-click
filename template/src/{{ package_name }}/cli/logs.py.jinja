@@ -21,10 +21,10 @@ __all__: Final = ["LogLevel", "configure_logging"]
 {%- if target_python_version[3:] | int < 10 %}
 
 
-if sys.version_info < (3, 10):
-    from typing_extensions import TypeAlias
-else:
+if sys.version_info >= (3, 10):
     from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
 {%- endif %}
 {%- if target_python_version[3:] | int < 12 %}
 

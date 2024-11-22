@@ -29,18 +29,18 @@ from {{ package_name }}.loc import _
 {%- if target_python_version[3:] | int < 11 %}
 
 
-if sys.version_info < (3, 11):
-    from typing_extensions import Unpack
-else:
+if sys.version_info >= (3, 11):
     from typing import Unpack
+else:
+    from typing_extensions import Unpack
 {%- endif %}
 {%- if target_python_version[3:] | int < 12 %}
 
 
-if sys.version_info < (3, 12):
-    from typing_extensions import override
-else:
+if sys.version_info >= (3, 12):
     from typing import override
+else:
+    from typing_extensions import override
 {%- endif %}
 
 
