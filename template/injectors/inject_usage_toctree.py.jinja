@@ -39,24 +39,5 @@ def main() -> None:
     )
     conf_path.write_text(conf)
 
-    tox_path = Path("tox.ini")
-    tox = tox_path.read_text()
-    source = (
-        "    sphinx\n"
-        "    sphinx-autoapi\n"
-    )
-    if source not in tox:
-        raise ValueError("Replacement failed.")
-
-    tox = tox.replace(
-        source,
-        (
-            "    sphinx\n"
-            "    sphinx-click\n"
-            "    sphinx-autoapi\n"
-        ),
-    )
-    tox_path.write_text(tox)
-
 if __name__ == "__main__":
     main()
