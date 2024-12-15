@@ -39,12 +39,13 @@ SPDX-License-Identifier = "MIT-0"
 ## Project configuration
 
 [[annotations]]
-path = "tox.ini"
+path = "copier.yml"
+precedence = "override"
 SPDX-FileCopyrightText = "© 2024 The Whiteprints Authors <whiteprints@pm.me>"
 SPDX-License-Identifier = "MIT-0"
 
 [[annotations]]
-path = "copier.yml"
+path = ".python-versions"
 precedence = "override"
 SPDX-FileCopyrightText = "© 2024 The Whiteprints Authors <whiteprints@pm.me>"
 SPDX-License-Identifier = "MIT-0"
