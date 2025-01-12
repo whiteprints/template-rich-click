@@ -23,8 +23,9 @@ from rich_click.rich_command import RichCommand as Command
 from rich_click.rich_command import RichGroup as Group
 
 from {{ package_name }} import __version__
-from {{ package_name }}.cli import APP_NAME, __app_name__
+from {{ package_name }}.cli import __app_name__
 from {{ package_name }}.cli.logs import LogLevel, configure_logging
+from {{ package_name }}.cli import exception
 from {{ package_name }}.loc import _
 {%- if target_python_version[3:] | int < 11 %}
 
@@ -49,7 +50,14 @@ __all__: Final = ["{{ package_name }}"]
 
 
 COMMAND_DIRECTORY_NAME: Final = "command"
+"""The name of the directory containing the Python command files."""
+
+
 COMMAND_ROOT: Final = Path(__file__).parent / COMMAND_DIRECTORY_NAME
+"""The path to the directory containing the Python command files."""
+
+APP_NAME: Final = exception.check_app_name(__app_name__).replace("-", "_").upper()
+"""The name of the application in capital letters."""
 
 
 class LazyCommandLoader(Group):
