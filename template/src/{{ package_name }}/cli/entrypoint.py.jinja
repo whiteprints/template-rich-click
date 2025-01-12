@@ -152,11 +152,11 @@ def print_copyright(ctx: Context, _param: Option, value: bool) -> None:
     console = importlib.import_module("{{ package_name }}.console")
 {%- if code_license_id == "" %}
     console.STDOUT.print(
-        '{{ header }}'  # noqa: E501
+        "{{ header }}"
     )
 {%- else %}
     console.STDOUT.print(
-        'Copyright © {% now 'utc', '%Y' %} {{ copyright_holder }} <{{ copyright_holder_email }}>.'  # noqa: E501
+        "Copyright © {% now 'utc', '%Y' %} {{ copyright_holder }} <{{ copyright_holder_email }}>."
     )
 {%- endif %}
     ctx.exit()
