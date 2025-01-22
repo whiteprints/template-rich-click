@@ -164,8 +164,8 @@ def print_copyright(ctx: Context, _param: Option, value: bool) -> None:
     )
 {%- else %}
     console.STDOUT.print(
-        "Copyright © {% now 'utc', '%Y' %}"
-        r"{{ copyright_holder }}"
+        "Copyright © {% now 'utc', '%Y' %} "
+        {{ copyright_holder | tojson }}
         "<{{ copyright_holder_email }}>."
     )
 {%- endif %}
